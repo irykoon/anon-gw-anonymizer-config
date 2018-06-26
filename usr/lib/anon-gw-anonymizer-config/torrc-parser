@@ -28,6 +28,19 @@ function get_tor_start_command() {
     tor_start_command="sudo $tor_start_command"
 }
 
+## extra_specified_torrc will extract torrc files specified in
+## $tor_start_command. Specifically, it will set "$default_torrc" and
+## "$f_torrc"
+function extra_specified_torrc() {
+    ## extract default_torrc file and -f torrc file
+    if [[ "$tor_start_command" =~ (--defaults-torrc )([^ ]*) ]]; then
+	default_torrc="${BASH_REMATCH[2]}"
+    fi
+
+    if [[ "$tor_start_command" =~ (-f )([^ ]*) ]]; then
+	f_torrc="${BASH_REMATCH[2]}"
+    fi
+}
 
 function parser() {
     for abs_path in "$@"; do
