@@ -6,14 +6,14 @@
 
 #set -ex
 
-temp_verbose_torrc=$(mktemp)
+torrc_all_in_one=
 
 declare -a torrc_files
 
 function parser() {
     for abs_path in "$@"; do
 	local abs="$abs_path"
-	echo "===> Parsing $abs_path" >> "$temp_verbose_torrc"
+        torrc_all_in_one+="===> Parsing $abs_path"$'\n'
 	if [[ -f  "$abs_path" ]]; then
 	    torrc_files+=("$abs_path")
 	    local file_content
@@ -24,7 +24,7 @@ function parser() {
                 if [[ "$line" =~ ^[[:space:]]*# && "$VERY_VERBOSE" != "1" ]]; then
                     continue
                 else
-		    echo "$line" >> "$temp_verbose_torrc"
+                    torrc_all_in_one+="$line"$'\n'
                 fi
 
 		if [[ "$line" =~ ^[[:space:]]*%include ]]; then
@@ -34,13 +34,13 @@ function parser() {
 	elif [[ -d "$abs_path" ]]; then
 		 parser "$(find "$abs_path" -mindepth 1 | sort -g)"
         fi
-	echo "===> Done parsing $abs" >> "$temp_verbose_torrc"
+        torrc_all_in_one+="===> Done parsing $abs"$'\n'
     done
 }
 
 function parsing_order_verbose(){
     echo "The Tor configuration files are parsed in such order: "
-    cat "$temp_verbose_torrc"
+    echo -n "$torrc_all_in_one"
 }
 
 function used_torrc_files(){
