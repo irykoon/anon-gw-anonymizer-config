@@ -58,6 +58,13 @@ parse_cmd_options() {
 ## generate_report will generate a user-friendly report based on
 ## $tor_verify_config_output and $tor_verify_config_exit_code
 function generate_report() {
+    ## extra_specified_torrc() is in torrc-parser which will set
+    ## "$default_torrc" and "$f_torrc"
+    extra_specified_torrc
+
+    ## call parser() to parse torrc files, arguments order matters
+    parser "$default_torrc" "$f_torrc"
+
     ## generate concise report
     echo "/===================================================================\\"
     echo "|                      Report Summary                               |"
@@ -67,6 +74,14 @@ function generate_report() {
         echo "No error detected in your Tor configuration."
         echo "Tor verify exit code: $tor_verify_config_exit_code"
         tor_verify_config_output_concise="Tor configuration was valid."
+
+        # value_of_disable_network is provided by torrc-parser
+        value_of_disable_network
+        if [ "$TOR_ENABLED" = "1" ]; then
+            echo "Tor will talk to the Tor network once it is started. (Please make sure this is what you want.)"
+        else
+            echo "Tor will NOT talk to the Tor network even if it is started. (If this is not what you want, please change the value of DisableNetwork to 0.)"
+        fi
     else
         echo "Your Tor config files contain at least one error."
         echo "Tor verify exit code: $tor_verify_config_exit_code"
@@ -114,13 +129,6 @@ $start_menu_instructions_system_first_part Terminal
 
 <blockquote>    $start_menu_instructions_system_first_part Restart Tor</blockquote>
     <br></br>or in Terminal: <code>sudo service tor@default restart</code></p>"
-
-    ## extra_specified_torrc() is in torrc-parser which will set
-    ## "$default_torrc" and "$f_torrc"
-    extra_specified_torrc
-
-    ## call parser() to parse torrc files, arguments order matters
-    parser "$default_torrc" "$f_torrc"
 
     echo "/===================================================================\\"
     echo "|                 Used Tor Configuration Files                      |"
