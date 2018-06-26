@@ -122,7 +122,7 @@ $start_menu_instructions_system_first_part Terminal
     ## "$default_torrc" and "$f_torrc"
     extra_specified_torrc
 
-    # call parser() to parse torrc files, arguments order matters
+    ## call parser() to parse torrc files, arguments order matters
     parser "$default_torrc" "$f_torrc"
 
     echo "/===================================================================\\"
@@ -156,9 +156,10 @@ $start_menu_instructions_system_first_part Terminal
 
 parse_cmd_options "$@"
 
-## get_tor_start_command() is included by torrc-parser
+## many functions in this script is provided by:
 source /usr/lib/anon-gw-anonymizer-config/torrc-parser
 
+## get_tor_start_command() is included by torrc-parser
 ## $tor_start_command is set by this call
 get_tor_start_command
 

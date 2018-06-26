@@ -42,6 +42,8 @@ function extra_specified_torrc() {
     fi
 }
 
+## one common call to parser is:
+## parser "$default_torrc" "$f_torrc"
 function parser() {
     for abs_path in "$@"; do
 	local abs="$abs_path"
