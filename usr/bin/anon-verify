@@ -164,6 +164,8 @@ parse_cmd_options "$@"
 ## many functions in this script is provided by torrc-parser
 ## provides:  get_tor_start_command
 ## provides:  value_of_disable_network
+## provides:  parser
+## provides:  extra_specified_torrc
 source /usr/lib/anon-gw-anonymizer-config/torrc-parser
 
 ## sets: $tor_start_command
