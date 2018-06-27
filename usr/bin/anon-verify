@@ -58,8 +58,8 @@ parse_cmd_options() {
 ## generate_report will generate a user-friendly report based on
 ## $tor_verify_config_output and $tor_verify_config_exit_code
 function generate_report() {
-    ## extra_specified_torrc() is in torrc-parser which will set
-    ## "$default_torrc" and "$f_torrc"
+    ## extra_specified_torrc() is in torrc-parser which will
+    ## sets: "$default_torrc" and "$f_torrc"
     extra_specified_torrc
 
     ## call parser() to parse torrc files, arguments order matters
@@ -161,11 +161,11 @@ $start_menu_instructions_system_first_part Terminal
 
 parse_cmd_options "$@"
 
-## many functions in this script is provided by:
+## many functions in this script is provided by torrc-parser
+## provides:  get_tor_start_command
 source /usr/lib/anon-gw-anonymizer-config/torrc-parser
 
-## get_tor_start_command() is included by torrc-parser
-## $tor_start_command is set by this call
+## sets: $tor_start_command
 get_tor_start_command
 
 ## since we should use exactly the same arguments to examine if Tor
